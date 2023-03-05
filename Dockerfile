@@ -2,6 +2,8 @@ FROM python:3.10-slim
 
 ENV PYTHONUNBUFFERED 1
 EXPOSE 443
+EXPOSE 2082
+
 WORKDIR /code
 
 RUN apt-get update \
@@ -18,5 +20,7 @@ COPY . /code
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 RUN apt-get remove -y wget gcc python3-dev
+VOLUME ./xray_config.json /xray_config.json
+VOLUME /var/lib/marzban /var/lib/marzban
 
 CMD ["bash", "-c", "alembic upgrade head; python main.py"]
